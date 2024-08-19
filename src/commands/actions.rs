@@ -2,7 +2,7 @@
 
 /// An enum representing possible actions
 ///
-/// This includes basic movement, opening a new file, entering different modes, etc.
+/// This includes basic movement, opening a default file, entering different modes, etc.
 #[derive(Copy, Clone)]
 pub enum ActionType {
     // Basic Movement Controls

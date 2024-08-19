@@ -1,27 +1,16 @@
-use crossterm::cursor::{Hide, MoveTo, Show, SetCursorStyle};
+use crossterm::cursor::{Hide, MoveTo, SetCursorStyle, Show};
 use crossterm::style::Print;
-use crossterm::terminal::{disable_raw_mode, enable_raw_mode, size, Clear, ClearType,
-                          EnterAlternateScreen, LeaveAlternateScreen};
-use crossterm::{queue, Command};
-use std::io::{stdout, Error, Write};
-
+use crossterm::terminal::{Clear, ClearType, disable_raw_mode, enable_raw_mode, EnterAlternateScreen,
+                          LeaveAlternateScreen, size};
+use crossterm::{Command, queue};
+use std::io::{Error, stdout, Write};
+use crate::terminal::screen_location::ScreenLocation;
 
 /// Struct representing the current size of the visible screen
+#[derive(Clone, Debug)]
 pub struct Size {
     pub height: usize,
     pub width: usize,
-}
-
-/// Struct representing a location on the screen
-pub struct ScreenLocation {
-    pub row: usize,
-    pub col: usize,
-}
-
-impl ScreenLocation {
-    pub fn default()->Self {
-        Self {row:0, col:0}
-    }
 }
 
 /// Represents the Terminal, and implements methods for interacting
@@ -56,6 +45,12 @@ impl Terminal {
     /// Clear the current line
     pub fn clear_line() -> Result<(), Error> {
         Self::queue_command(Clear(ClearType::CurrentLine))?;
+        Ok(())
+    }
+
+    /// Clear to the end of the current line
+    pub fn clear_to_line_end()->Result<(), Error>{
+        Self::queue_command(Clear(ClearType::UntilNewLine))?;
         Ok(())
     }
 
